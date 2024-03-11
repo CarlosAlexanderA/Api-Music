@@ -1,7 +1,10 @@
 import { Router } from 'express'
-import { songController } from '../controllers/songController.js'
+import { genreController } from '../controllers/genreController.js'
 
-export const songRouter = Router()
+export const genreRouter = Router()
 
-songRouter.get('/', songController.getRandom)
-songRouter.get('/:id', songController.getId)
+genreRouter.get('/', genreController.getAll)
+genreRouter.get('/:id', genreController.getById)
+genreRouter.post('/', genreController.create)
+// genreRouter.delete('/:id', genreController.delete)
+// genreRouter.patch('/:id', genreController.update)

@@ -1,4 +1,5 @@
 import { songModel } from '../models/mysql/index.js'
+import { validatePartialSong, validateSong } from '../schemas/song.js'
 
 export class songController {
   static async getAll (req, res) {
@@ -14,8 +15,10 @@ export class songController {
   }
 
   static async create (req, res) {
-    if (!req.body) {
-      return res.status(400).json({ message: 'no created song' })
+    const result = validateSong(req.body)
+
+    if (!result.success) {
+      return res.status(400).json({ message: JSON.parse(result.error.message) })
     }
     const newSong = await songModel.create({ input: req.body })
 
@@ -32,6 +35,10 @@ export class songController {
   }
 
   static async update (req, res) {
+    const result = validatePartialSong(req.body)
+
+    if (!result.success) { return res.status(400).json({ message: JSON.parse(result.error.message) }) }
+
     const { id } = req.params
 
     const updateSong = await songModel.update({ id, input: req.body })

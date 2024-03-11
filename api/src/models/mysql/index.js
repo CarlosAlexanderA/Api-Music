@@ -60,7 +60,65 @@ export class songModel {
           fileds.push(`${key} = "${value}"`)
         }
       })
-      console.log('UPDATE songs ' + fileds.join(', ') + ' SET  WHERE id = ?', [id])
+      await connection.query('UPDATE songs SET ' + fileds.join(', ') + ' WHERE id = ?', [id])
+
+      const song = await this.getById({ id })
+      return song
+    } catch (error) {
+      throw new Error(' Dont Update')
+    }
+  }
+}
+export class genreModel {
+  static async getAll () {
+    try {
+      const [genres] = await connection.query('select * from genres')
+      return genres
+    } catch (error) {
+      throw new Error('songs is failed')
+    }
+  }
+
+  static async getById ({ id }) {
+    const [genre] = await connection.query('select * from genres where id = (?)', [id])
+
+    if (genre.length === 0) return null
+
+    return genre[0]
+  }
+
+  static async create ({ input }) {
+    const { name } = input
+    try {
+      await connection.query(`INSERT INTO genres (name) 
+      VALUES ( ? );`, [name])
+    } catch (error) {
+      throw new Error('Error createing song')
+    }
+    const [genres] = await connection.query('select * from genres')
+    return genres
+  }
+
+  static async delete ({ id }) {
+    let prevSong
+    try {
+      prevSong = this.getById({ id })
+      await connection.query('delete from songs where id = ?', [id])
+    } catch (error) {
+      throw new Error('Error to deleting song')
+    }
+    return prevSong
+  }
+
+  static async update ({ id, input }) {
+    try {
+      const fileds = []
+
+      Object.entries(input).forEach(([key, value]) => {
+        if (value !== undefined) {
+          fileds.push(`${key} = "${value}"`)
+        }
+      })
       await connection.query('UPDATE songs SET ' + fileds.join(', ') + ' WHERE id = ?', [id])
 
       const song = await this.getById({ id })

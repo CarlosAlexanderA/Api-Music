@@ -1,0 +1,16 @@
+
+### songs rutes
+http://localhost:3000/song
+
+
+### genres rutes
+### get all genres
+http://localhost:3000/genre
+
+### create genre
+POST http://localhost:3000/song
+Content-Type: application/json
+
+{
+  "name": "pop"
+}
