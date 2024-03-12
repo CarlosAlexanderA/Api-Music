@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { songController } from '../controllers/songController.js'
+import { createRouters } from './index.js'
+import { BaseController } from '../controllers/index.js'
+import { validatePartialSong, validateSong } from '../schemas/song.js'
+import { songModel } from '../models/mysql/index.js'
+
+const controller = new BaseController(validatePartialSong, validateSong, songModel)
 
 export const songRouter = Router()
-
-songRouter.get('/', songController.getAll)
-songRouter.get('/:id', songController.getById)
-songRouter.post('/', songController.create)
-songRouter.delete('/:id', songController.delete)
-songRouter.patch('/:id', songController.update)
+createRouters(controller, songRouter)

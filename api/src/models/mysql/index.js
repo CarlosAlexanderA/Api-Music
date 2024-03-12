@@ -8,7 +8,7 @@ const config = {
   database: 'api_music'
 }
 
-const connection = await mysql.createConnection(config)
+export const connection = await mysql.createConnection(config)
 
 export class songModel {
   static async getAll () {
