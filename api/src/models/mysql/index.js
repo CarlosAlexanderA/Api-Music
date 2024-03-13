@@ -10,48 +10,55 @@ const config = {
 
 export const connection = await mysql.createConnection(config)
 
-export class songModel {
-  static async getAll () {
+export class BaseModel {
+  constructor (tablename) {
+    this.tablename = tablename
+  }
+
+  async getAll () {
     try {
-      const [songs] = await connection.query('select * from songs')
-      return songs
+      const [items] = await connection.query('select * from ' + this.tablename)
+      return items
     } catch (error) {
-      throw new Error('songs is failed')
+      console.log(error)
+      throw new Error('table ? is not found')
     }
   }
 
-  static async getById ({ id }) {
-    const [song] = await connection.query('select * from songs where id = (?)', [id])
+  async getById ({ id }) {
+    const [item] = await connection.query('select * from ' + this.tablename + ' where id = (?)', [id])
 
-    if (song.length === 0) return null
+    if (item.length === 0) return null
 
-    return song[0]
+    return item[0]
   }
 
-  static async create ({ input }) {
-    const { name, duration, release_date, link } = input
+  async create ({ input }) {
+    const keys = Object.keys(input)
+    const values = Object.values(input)
     try {
-      await connection.query(`INSERT INTO songs (name, duration, release_date, link) 
-      VALUES ( ?, ?, ?, ? );`, [name, duration, release_date, link])
+      await connection.query('INSERT INTO ' + this.tablename + ' (' + keys.join(', ') + ') VALUES ( ' + values.map(item => Number.isInteger(item) ? item : `'${item}'`) + ' );')
     } catch (error) {
-      throw new Error('Error createing song')
+      console.log(error)
+      throw new Error('error creating element form talbe ' + this.tablename)
     }
-    const [songs] = await connection.query('select * from songs')
-    return songs
+    const items = await this.getAll()
+    return items
   }
 
-  static async delete ({ id }) {
-    let prevSong
+  async delete ({ id }) {
+    let prevItem
     try {
-      prevSong = this.getById({ id })
-      await connection.query('delete from songs where id = ?', [id])
+      prevItem = await this.getById({ id })
+      await connection.query('delete from ' + this.tablename + ' where id = ?', [id])
     } catch (error) {
-      throw new Error('Error to deleting song')
+      console.log(error)
+      throw new Error('Error to deleting item: \n' + prevItem)
     }
-    return prevSong
+    return prevItem
   }
 
-  static async update ({ id, input }) {
+  async update ({ id, input }) {
     try {
       const fileds = []
 
@@ -60,12 +67,13 @@ export class songModel {
           fileds.push(`${key} = "${value}"`)
         }
       })
-      await connection.query('UPDATE songs SET ' + fileds.join(', ') + ' WHERE id = ?', [id])
+      await connection.query('UPDATE ' + this.tablename + ' SET ' + fileds.join(', ') + ' WHERE id = ?', [id])
 
-      const song = await this.getById({ id })
-      return song
+      const item = await this.getById({ id })
+      return item
     } catch (error) {
-      throw new Error(' Dont Update')
+      console.log(error)
+      throw new Error('dont update item form table ' + this.tablename)
     }
   }
 }

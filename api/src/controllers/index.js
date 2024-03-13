@@ -21,9 +21,9 @@ export class BaseController {
     const result = this.validateComplete(req.body)
 
     if (!result.success) return res.status(400).json({ message: result.error.message })
-
-    const newItem = await this.model.create(req.body)
-
+    // console.log(req.body)
+    const newItem = await this.model.create({ input: req.body })
+    // console.log(newItem)
     return res.status(201).json(newItem)
   }
 
