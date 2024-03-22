@@ -5,7 +5,7 @@ export default function Button({ children, transparent, className }) {
         transparent
           ? 'text-current bg-transparent border-black/50'
           : 'bg-blue-500 text-white border-transparent'
-      } ${className} `}>
+      } ${className}`}>
       {children}
     </button>
   )

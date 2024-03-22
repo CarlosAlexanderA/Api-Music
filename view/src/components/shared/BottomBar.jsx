@@ -1,7 +1,3 @@
-import React from 'react'
-
-export function BottomBar () {
-  return (
-    <div>BottomBar</div>
-  )
+export function BottomBar() {
+  return <h1>Bootombar</h1>
 }

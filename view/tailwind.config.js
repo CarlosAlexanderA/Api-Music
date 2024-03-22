@@ -6,11 +6,15 @@ export default {
   ],
   theme: {
     extend: {
+      important: true,
       fontFamily: {
         inter: ['Inter', 'sans-serif']
       },
       gridTemplateColumns: {
-        new2: '2fr, minmax(200px, 1fr)'
+        sect2: '2fr, minmax(200px, 1fr)',
+        cardsFit: 'repeat(auto-fit, minmax(calc(25% - (4 * 24px / 3)), 1fr))',
+        cardsGenre: 'repeat(auto-fit, minmax(calc(33% - (3 * 24px / 3)), 1fr))'
+
       }
     }
   },

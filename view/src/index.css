@@ -21,5 +21,13 @@
     @apply sticky top-0 z-50 w-full;
   }
 
+  .grid-sections-cards-2 {
+    @apply grid grid-cols-1 lg:grid-cols-sect2 gap-4 rounded-lg;
+  }
+
+  .offButton {
+    color: rgb(59 130 246) !important;
+    background-color: rgb(203, 226, 253) !important;
+  }
 
 }
