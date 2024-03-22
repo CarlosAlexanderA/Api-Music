@@ -8,6 +8,9 @@ export default {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif']
+      },
+      gridTemplateColumns: {
+        new2: '2fr, minmax(200px, 1fr)'
       }
     }
   },

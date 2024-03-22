@@ -3,7 +3,7 @@ import { Search, XMark } from '../icons/icons'
 import { SimpleInfoCard } from './SimpleInfoCard'
 
 export function SearchBar () {
-  const [focus, setFocus] = useState(true)
+  const [focus, setFocus] = useState(false)
 
   return (
     <div className="bg-white max-w-sm flex p-3 border-2 rounded-xl gap-2 relative ">
